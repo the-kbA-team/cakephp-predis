@@ -1,0 +1,16 @@
+{
+    "name": "kba-team/cakephp-predis",
+    "description": "Predis cache engine for CakePHP",
+    "type": "cakephp-plugin",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^5.5|^7.0",
+        "composer/installers": "^1.11",
+        "cakephp/cakephp": "^2.4",
+        "predis/predis": "^1.1"
+    },
+    "extra": {
+        "installer-name": "Predis"
+    }
+}
