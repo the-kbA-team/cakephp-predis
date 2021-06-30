@@ -3,7 +3,7 @@
     "description": "Predis cache engine for CakePHP",
     "type": "cakephp-plugin",
     "license": "MIT",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {
         "php": "^5.5|^7.0",
         "composer/installers": "^1.11",
