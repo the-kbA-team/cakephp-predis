@@ -11,6 +11,6 @@
         "predis/predis": "^1.1"
     },
     "extra": {
-        "installer-name": "Predis"
+        "installer-name": "PredisCache"
     }
 }
