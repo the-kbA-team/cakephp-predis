@@ -17,7 +17,7 @@ App::uses('RedisEngine', 'Cache/Engine');
 /**
  * Redis storage engine for cache (cluster support)
  *
- * @package       Cacke.Cache.Engine
+ * @package       Cake.Cache.Engine
  */
 class PredisEngine extends RedisEngine
 {
