@@ -9,9 +9,6 @@
         "cakephp/cakephp": "~3.6",
         "predis/predis": "^1.1"
     },
-    "extra": {
-        "installer-name": "PredisCache"
-    },
     "autoload": {
         "psr-4": {
             "kbATeam\\CakePhpPredis\\": "src/"
