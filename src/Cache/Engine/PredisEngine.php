@@ -12,12 +12,12 @@
  * @license       https://github.com/the-kbA-team/cakephp-predis/blob/main/LICENSE
  */
 
-App::uses('RedisEngine', 'Cache/Engine');
+use Cake\Cache\Engine\RedisEngine;
 
 /**
  * Redis storage engine for cache (cluster support)
  *
- * @package       Cacke.Cache.Engine
+ * @package       Cake.Cache.Engine
  */
 class PredisEngine extends RedisEngine
 {
@@ -54,6 +54,8 @@ class PredisEngine extends RedisEngine
     /**
      * Connects to a Redis server
      *
+     * @throws Exception
+     *
      * @return bool True if Redis server was connected
      */
     protected function _connect()
@@ -81,7 +83,7 @@ class PredisEngine extends RedisEngine
             foreach ($this->settings['sentinel'] as $host) {
                 $node = [
                     'scheme' => $this->settings['scheme'],
-                    'host' =>  $host,
+                    'host' => $host,
                     'port' => $this->settings['port'],
                     'password' => $this->settings['password'],
                 ];
@@ -118,7 +120,7 @@ class PredisEngine extends RedisEngine
             foreach ($this->settings['server'] as $host) {
                 $node = [
                     'scheme' => $this->settings['scheme'],
-                    'host' =>  $host,
+                    'host' => $host,
                     'port' => $this->settings['port'],
                     'password' => $this->settings['password'],
                 ];
@@ -132,49 +134,6 @@ class PredisEngine extends RedisEngine
         } catch (Predis\CommunicationException $e) {
             return false;
         }
-
-        return true;
-    }
-
-    /**
-     * Write data for key into cache.
-     *
-     * @param string $key Identifier for the data
-     * @param mixed $value Data to be cached
-     * @param int $duration How long to cache the data, in seconds
-     * @return bool True if the data was successfully cached, false on failure
-     */
-    public function write($key, $value, $duration)
-    {
-        if (!is_int($value)) {
-            $value = serialize($value);
-        }
-        if ($duration === 0) {
-            return $this->_Redis->set($key, $value);
-        }
-
-        return $this->_Redis->setex($key, $duration, $value);
-    }
-
-    public function delete($key)
-    {
-        return $this->_Redis->del($key);
-    }
-
-    /**
-     * Delete all keys from the cache
-     *
-     * @param bool $check Whether or not expiration keys should be checked. If
-     *   true, no keys will be removed as cache will rely on redis TTL's.
-     * @return bool True if the cache was successfully cleared, false otherwise
-     */
-    public function clear($check)
-    {
-        if ($check) {
-            return true;
-        }
-        $keys = $this->_Redis->keys($this->settings['prefix'] . '*');
-        $this->_Redis->del($keys);
 
         return true;
     }
