@@ -12,6 +12,9 @@
  * @license       https://github.com/the-kbA-team/cakephp-predis/blob/main/LICENSE
  */
 
+
+namespace kbATeam\CakePhpPredis\Cache\Engine;
+
 use Cake\Cache\Engine\RedisEngine;
 
 /**
@@ -54,9 +57,9 @@ class PredisEngine extends RedisEngine
     /**
      * Connects to a Redis server
      *
+     * @return bool True if Redis server was connected
      * @throws Exception
      *
-     * @return bool True if Redis server was connected
      */
     protected function _connect()
     {

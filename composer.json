@@ -12,5 +12,10 @@
     },
     "extra": {
         "installer-name": "PredisCache"
+    },
+    "autoload": {
+        "psr-4": {
+            "kbATeam\\CakePhpPredis\\": "src/"
+        }
     }
 }
