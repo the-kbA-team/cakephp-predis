@@ -35,7 +35,7 @@ class PredisEngine extends RedisEngine
      */
     public function init($settings = array())
     {
-        if (!class_exists('Predis\Client')) {
+        if (!class_exists('\Predis\Client')) {
             return false;
         }
 
@@ -63,12 +63,12 @@ class PredisEngine extends RedisEngine
      */
     protected function _connect()
     {
-        if (empty($this->settings['server']) && empty($this->settings['sentinel'])) {
-            throw new Exception('No redis server configured!');
+        if (empty($this->_config['server']) && empty($this->_config['sentinel'])) {
+            throw new \Exception('No redis server configured!');
         }
 
-        if (!empty($this->settings['server']) && !empty($this->settings['sentinel'])) {
-            throw new Exception('Both sentinel and server is set!');
+        if (!empty($this->_config['server']) && !empty($this->_config['sentinel'])) {
+            throw new \Exception('Both sentinel and server is set!');
         }
 
         $parameters = [];
@@ -77,28 +77,28 @@ class PredisEngine extends RedisEngine
         /**
          * Sentinel configuration
          */
-        if (!empty($this->settings['sentinel'])) {
-            if (is_string($this->settings['sentinel'])) {
-                $this->settings['sentinel'] = [$this->settings['sentinel']];
+        if (!empty($this->_config['sentinel'])) {
+            if (is_string($this->_config['sentinel'])) {
+                $this->_config['sentinel'] = [$this->_config['sentinel']];
             }
 
             $parameters = [];
-            foreach ($this->settings['sentinel'] as $host) {
+            foreach ($this->_config['sentinel'] as $host) {
                 $node = [
-                    'scheme' => $this->settings['scheme'],
+                    'scheme' => $this->_config['scheme'],
                     'host' => $host,
-                    'port' => $this->settings['port'],
-                    'password' => $this->settings['password'],
+                    'port' => $this->_config['port'],
+                    'password' => $this->_config['password'],
                 ];
                 $parameters[] = $node;
             }
 
             $options = [
                 'replication' => 'sentinel',
-                'service' => $this->settings['service'],
+                'service' => $this->_config['service'],
                 'parameters' => [
-                    'password' => $this->settings['password'],
-                    'database' => $this->settings['database'],
+                    'password' => $this->_config['password'],
+                    'database' => $this->_config['database'],
                 ],
             ];
         }
@@ -106,38 +106,72 @@ class PredisEngine extends RedisEngine
         /**
          * Master/slave configuration
          */
-        if (!empty($this->settings['server'])) {
+        if (!empty($this->_config['server'])) {
             $options = [
                 'replication' => 'predis',
                 'parameters' => [
-                    'password' => $this->settings['password'],
-                    'database' => $this->settings['database'],
+                    'password' => $this->_config['password'],
+                    'database' => $this->_config['database'],
                 ],
             ];
-            if (is_string($this->settings['server'])) {
-                $this->settings['server'] = [$this->settings['server']];
+            if (is_string($this->_config['server'])) {
+                $this->_config['server'] = [$this->_config['server']];
                 $options = [];
             }
 
             $parameters = [];
-            foreach ($this->settings['server'] as $host) {
+            foreach ($this->_config['server'] as $host) {
                 $node = [
-                    'scheme' => $this->settings['scheme'],
+                    'scheme' => $this->_config['scheme'],
                     'host' => $host,
-                    'port' => $this->settings['port'],
-                    'password' => $this->settings['password'],
+                    'port' => $this->_config['port'],
+                    'password' => $this->_config['password'],
                 ];
-                //$node = sprintf("%s://%s", $this->settings['scheme'], $host);
+                //$node = sprintf("%s://%s", $this->_config['scheme'], $host);
                 $parameters[] = $node;
             }
         }
 
         try {
-            $this->_Redis = new Predis\Client($parameters, $options);
-        } catch (Predis\CommunicationException $e) {
+            $this->_Redis = new \Predis\Client($parameters, $options);
+        } catch (\Predis\CommunicationException $e) {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * Delete a key from the cache
+     *
+     * @param string $key Identifier for the data
+     * @return bool True if the value was successfully deleted, false if it didn't exist or couldn't be removed
+     */
+    public function delete($key)
+    {
+        $key = $this->_key($key);
+
+        return $this->_Redis->del($key) > 0;
+    }
+
+    /**
+     * Delete all keys from the cache
+     *
+     * @param bool $check If true will check expiration, otherwise delete all.
+     * @return bool True if the cache was successfully cleared, false otherwise
+     */
+    public function clear($check)
+    {
+        if ($check) {
+            return true;
+        }
+        $keys = $this->_Redis->keys($this->_config['prefix'] . '*');
+
+        $result = [];
+        foreach ($keys as $key) {
+            $result[] = $this->_Redis->delete($key) > 0;
+        }
+
+        return !in_array(false, $result);
     }
 }
