@@ -21,7 +21,7 @@ In your config file ...
 
 ```php
 Cache::config('_session_', [
-  'engine' => 'PredisCache.Predis',
+    'engine' => 'PredisCache.Predis',
     'sentinel' => ['<sentinel host 1>', ...., '<sentinel host n>'],
     'password' => "<password>",
     'port' => 26379,
