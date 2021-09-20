@@ -174,10 +174,12 @@ class PredisEngine extends RedisEngine
             return true;
         }
         $keys = $this->_Redis->keys($this->settings['prefix'] . '*');
-        if (!empty($keys)) {
-            $this->_Redis->del($keys);
+
+        $result = [];
+        foreach ($keys as $key) {
+            $result[] = $this->_Redis->del($key) > 0;
         }
 
-        return true;
+        return !in_array(false, $result);
     }
 }
