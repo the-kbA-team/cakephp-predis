@@ -169,7 +169,7 @@ class PredisEngine extends RedisEngine
 
         $result = [];
         foreach ($keys as $key) {
-            $result[] = $this->_Redis->delete($key) > 0;
+            $result[] = $this->_Redis->del($key) > 0;
         }
 
         return !in_array(false, $result);
