@@ -127,6 +127,13 @@ class PredisEngine extends RedisEngine
             }
         }
 
+        /**
+         * should exceptions be thrown
+         */
+        if (isset($this->settings['exceptions'])) {
+            $options['exceptions'] = (bool)$this->settings['exceptions'];
+        }
+
         try {
             $this->_Redis = new Predis\Client($parameters, $options);
         } catch (Predis\CommunicationException $e) {
