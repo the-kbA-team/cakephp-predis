@@ -39,7 +39,7 @@ Possible configuration parameters are:
 * `server`   Redis server (must be master),
 * `sentinel`  List of sentinel nodes (hostnames or IP addresses)
 * `port`    Either redis Port (6379) is `server` is used otherwise the sentinel port (26379)
-* `exception` Should exceptions be thrown or not (true)
+* `exceptions` Should exceptions be thrown or not (true)
 * `database` See CakePhp 2.x Caching                         => 0,
 * `password` Redis password
 * `service`  Sentinel only: Sentinel service name (mymaster)
