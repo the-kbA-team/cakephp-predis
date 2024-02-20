@@ -16,6 +16,7 @@
 namespace kbATeam\CakePhpPredis\Cache\Engine;
 
 use Cake\Cache\Engine\RedisEngine;
+use Predis\Client;
 
 /**
  * Redis storage engine for cache (cluster support)
@@ -30,10 +31,10 @@ class PredisEngine extends RedisEngine
      * Called automatically by the cache frontend
      * To reinitialize the settings call Cache::engine('EngineName', [optional] settings = array());
      *
-     * @param array $settings array of setting for the engine
+     * @param array<string, mixed> $settings array of setting for the engine
      * @return bool True if the engine has been successfully initialized, false if not
      */
-    public function init($settings = array())
+    public function init($settings = array()): bool
     {
         if (!class_exists('\Predis\Client')) {
             return false;
@@ -58,10 +59,10 @@ class PredisEngine extends RedisEngine
      * Connects to a Redis server
      *
      * @return bool True if Redis server was connected
-     * @throws Exception
+     * @throws \Exception
      *
      */
-    protected function _connect()
+    protected function _connect(): bool
     {
         if (empty($this->_config['server']) && empty($this->_config['sentinel'])) {
             throw new \Exception('No redis server configured!');
@@ -82,7 +83,6 @@ class PredisEngine extends RedisEngine
                 $this->_config['sentinel'] = [$this->_config['sentinel']];
             }
 
-            $parameters = [];
             foreach ($this->_config['sentinel'] as $host) {
                 $node = [
                     'scheme' => $this->_config['scheme'],
@@ -154,11 +154,11 @@ class PredisEngine extends RedisEngine
      * @param string $key Identifier for the data
      * @return bool True if the value was successfully deleted, false if it didn't exist or couldn't be removed
      */
-    public function delete($key)
+    public function delete($key): bool
     {
         $key = $this->_key($key);
 
-        return $this->_Redis->del($key) > 0;
+        return (int)$this->_Redis->del($key) > 0;
     }
 
     /**
@@ -167,7 +167,7 @@ class PredisEngine extends RedisEngine
      * @param bool $check If true will check expiration, otherwise delete all.
      * @return bool True if the cache was successfully cleared, false otherwise
      */
-    public function clear($check)
+    public function clear($check = false): bool
     {
         if ($check) {
             return true;
@@ -176,7 +176,7 @@ class PredisEngine extends RedisEngine
 
         $result = [];
         foreach ($keys as $key) {
-            $result[] = $this->_Redis->del($key) > 0;
+            $result[] = (int)$this->_Redis->del($key) > 0;
         }
 
         return !in_array(false, $result);

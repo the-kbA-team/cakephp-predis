@@ -1,0 +1,8 @@
+parameters:
+    level: 9
+    treatPhpDocTypesAsCertain: false
+    checkGenericClassInNonGenericObjectType: false
+    #bootstrapFiles:
+    #    - phpstan_bootstrap.php
+    paths:
+        - src/
