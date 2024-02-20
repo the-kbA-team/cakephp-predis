@@ -2,7 +2,9 @@ parameters:
     level: 9
     treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: false
-    #bootstrapFiles:
-    #    - phpstan_bootstrap.php
+    ignoreErrors:
+        -
+            message: '#Call to an undefined method Predis\\Client::[a-zA-Z0-9\\_]+\(\)#'
+            path: src/Cache/Engine/*
     paths:
         - src/
