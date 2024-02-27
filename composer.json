@@ -19,8 +19,5 @@
         "allow-plugins": {
             "composer/installers": true
         }
-    },
-    "require-dev": {
-        "phpstan/phpstan": "^1.10"
     }
 }
