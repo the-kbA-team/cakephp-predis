@@ -1,0 +1,9 @@
+parameters:
+  level: 9
+  scanDirectories:
+    - vendor
+  ignoreErrors:
+    - message: '#Property RedisEngine::\$_Redis \(Redis\) does not accept Predis\\Client.#'
+      path: Lib/Cache/Engine/PredisEngine.php
+  paths:
+    - Lib/

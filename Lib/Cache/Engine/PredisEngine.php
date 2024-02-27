@@ -27,7 +27,7 @@ class PredisEngine extends RedisEngine
      * Called automatically by the cache frontend
      * To reinitialize the settings call Cache::engine('EngineName', [optional] settings = array());
      *
-     * @param array $settings array of setting for the engine
+     * @param array<string, mixed> $settings array of setting for the engine
      * @return bool True if the engine has been successfully initialized, false if not
      */
     public function init($settings = array())
@@ -135,6 +135,7 @@ class PredisEngine extends RedisEngine
         }
 
         try {
+
             $this->_Redis = new Predis\Client($parameters, $options);
         } catch (Predis\CommunicationException $e) {
             return false;
@@ -184,7 +185,7 @@ class PredisEngine extends RedisEngine
 
         $result = [];
         foreach ($keys as $key) {
-            $result[] = $this->_Redis->del($key) > 0;
+            $result[] = (int)$this->_Redis->del($key) > 0;
         }
 
         return !in_array(false, $result);

@@ -8,9 +8,15 @@
         "php": "^5.5|^7.0",
         "composer/installers": "^1.0",
         "cakephp/cakephp": "^2.4",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "ext-redis": "*"
     },
     "extra": {
         "installer-name": "PredisCache"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
     }
 }
