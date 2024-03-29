@@ -30,7 +30,7 @@ class PredisEngine extends RedisEngine
      * @param array<string, mixed> $settings array of setting for the engine
      * @return bool True if the engine has been successfully initialized, false if not
      */
-    public function init($settings = array())
+    public function init($settings = array()): bool
     {
         if (!class_exists('Predis\Client')) {
             return false;
@@ -56,7 +56,7 @@ class PredisEngine extends RedisEngine
      *
      * @return bool True if Redis server was connected
      */
-    protected function _connect()
+    protected function _connect(): bool
     {
         if (empty($this->settings['server']) && empty($this->settings['sentinel'])) {
             throw new Exception('No redis server configured!');
@@ -152,7 +152,7 @@ class PredisEngine extends RedisEngine
      * @param int $duration How long to cache the data, in seconds
      * @return bool True if the data was successfully cached, false on failure
      */
-    public function write($key, $value, $duration)
+    public function write($key, $value, $duration): bool
     {
         if (!is_int($value)) {
             $value = serialize($value);
@@ -164,6 +164,11 @@ class PredisEngine extends RedisEngine
         return $this->_Redis->setex($key, $duration, $value);
     }
 
+    /**
+     * @param $key
+     * @return bool|int|Redis
+     * @throws RedisException
+     */
     public function delete($key)
     {
         return $this->_Redis->del($key);
@@ -176,7 +181,7 @@ class PredisEngine extends RedisEngine
      *   true, no keys will be removed as cache will rely on redis TTL's.
      * @return bool True if the cache was successfully cleared, false otherwise
      */
-    public function clear($check)
+    public function clear($check): bool
     {
         if ($check) {
             return true;
