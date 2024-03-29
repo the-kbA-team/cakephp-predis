@@ -444,6 +444,7 @@ class PredisEngine extends CacheEngine
 
     /**
      * Disconnects from the redis server
+     * @return void
      */
     public function __destruct()
     {
