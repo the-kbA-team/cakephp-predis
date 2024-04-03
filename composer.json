@@ -4,16 +4,10 @@
     "type": "cakephp-plugin",
     "license": "MIT",
     "minimum-stability": "stable",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/kamilwylegala/cakephp2-php8"
-        }
-    ],
     "require": {
         "php": "^8.0",
         "composer/installers": "^1.0",
-        "cakephp/cakephp": "dev-master",
+        "cakephp/cakephp": "^2.10",
         "predis/predis": "^1.1",
         "ext-redis": "*"
     },
