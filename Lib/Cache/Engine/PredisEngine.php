@@ -150,9 +150,9 @@ class PredisEngine extends RedisEngine
      * @param string $key Identifier for the data
      * @param mixed $value Data to be cached
      * @param int $duration How long to cache the data, in seconds
-     * @return bool True if the data was successfully cached, false on failure
+     * @return bool|string True if the data was successfully cached, false on failure
      */
-    public function write($key, $value, $duration): bool
+    public function write($key, $value, $duration)
     {
         if (!is_int($value)) {
             $value = serialize($value);
