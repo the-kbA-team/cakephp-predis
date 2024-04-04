@@ -1,7 +1,5 @@
 parameters:
     level: 9
-    treatPhpDocTypesAsCertain: false
-    checkGenericClassInNonGenericObjectType: false
     ignoreErrors:
         -
             message: '#Call to an undefined method Predis\\Client::[a-zA-Z0-9\\_]+\(\)#'

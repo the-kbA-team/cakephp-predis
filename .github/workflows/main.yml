@@ -15,38 +15,43 @@ on:
 jobs:
   # Composer config validation
   composer:
-    name: Composer config validation
-    runs-on: ubuntu-latest
+    name: "Composer config validation"
+    runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v3
-      - name: Validate composer.json
-        run: composer validate --strict
+      - uses: "actions/checkout@v3"
+      - name: "Validate composer.json"
+        run: "composer validate --strict"
 
   # PHP syntax validation
   php:
-    name: PHP syntax validation
-    runs-on: ubuntu-latest
+    name: "PHP syntax validation"
+    runs-on: "ubuntu-latest"
+    strategy:
+      matrix:
+        php_version: [ 8.0, 8.1, 8.2, 8.3 ]
     steps:
-      - uses: actions/checkout@v3
-      - name: Check PHP syntax of config/phinx.php
-        run: php -l src/
+      - uses: "actions/checkout@v3"
+      - uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php_version }}"
+      - name: "Check PHP syntax of package"
+        run: "php -l src/"
 
   # phpstan for several php versions
   phpstan:
-    runs-on: ubuntu-latest
+    runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        php_version: [8.1, 8.2, 8.3]
+        php_version: [8.0, 8.1, 8.2, 8.3]
     steps:
-      - uses: actions/checkout@v3
-      - uses: php-actions/composer@v6
+      - uses: "actions/checkout@v3"
+      - uses: "php-actions/composer@v6"
         with:
-          php_version: ${{ matrix.php_version }}
-          php_extensions: redis intl
+          php_version: "${{ matrix.php_version }}"
+          php_extensions: "redis intl"
 
-      - name: PHPStan Static Analysis
-        uses: php-actions/phpstan@v3
+      - name: "PHPStan Static Analysis"
+        uses: "php-actions/phpstan@v3"
         with:
-          php_version: ${{ matrix.php_version }}
-          configuration: phpstan.neon
-          path: src/
+          php_version: "${{ matrix.php_version }}"
+          configuration: "phpstan.neon"

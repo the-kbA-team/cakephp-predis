@@ -78,7 +78,7 @@ class PredisEngine extends CacheEngine
      * @param array<string, mixed> $config array of setting for the engine
      * @return bool True if the engine has been successfully initialized, false if not
      */
-    public function init($config = array()): bool
+    public function init(array $config = []): bool
     {
         if (!class_exists('\Predis\Client')) {
             return false;
@@ -302,7 +302,7 @@ class PredisEngine extends CacheEngine
      * @param bool $check
      * @return bool
      */
-    public function clear($check = false): bool
+    public function clear(bool $check = false): bool
     {
         if ($check) {
             return true;
@@ -337,7 +337,7 @@ class PredisEngine extends CacheEngine
         while (true) {
             $keys = $this->_Redis->scan($iterator, $pattern);
 
-            if ($keys === false) {
+            if (empty($keys)) {
                 break;
             }
 
