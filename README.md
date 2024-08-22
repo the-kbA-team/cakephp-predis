@@ -3,7 +3,7 @@
 [![License: MIT][license-mit]](LICENSE)
 [![Packagist Version][packagist-badge]][packagist]
 
-Graylog log engine for CakePHP 2.x
+Predis plugin for CakePHP 2.x
 
 ## Usage
 
