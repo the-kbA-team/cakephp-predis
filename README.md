@@ -3,7 +3,7 @@
 [![License: MIT][license-mit]](LICENSE)
 [![Packagist Version][packagist-badge]][packagist]
 
-Graylog log engine for CakePHP 3.x
+Predis plugin for CakePHP 5.x
 
 ## Usage
 
@@ -40,7 +40,7 @@ Possible configuration parameters are:
 
 ### Further reading
 
-* About [CakePHP 3.x Caching](https://book.cakephp.org/3/en/core-libraries/caching.html)
+* About [CakePHP 5.x Caching](https://book.cakephp.org/5/en/core-libraries/caching.html)
 
 
 [license-mit]: https://img.shields.io/badge/license-MIT-blue.svg
