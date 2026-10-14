@@ -44,6 +44,38 @@ Possible configuration parameters are:
 * `password` Redis password
 * `service`  Sentinel only: Sentinel service name (mymaster)
 
+## Development
+
+Use Docker and Make; no local PHP or Composer installation is required.
+The supported PHP range remains `^5.5|^7.0`. Run `make help` for all targets.
+
+```bash
+make validate
+make lint PHP_VERSION=5.5
+make install PHP_VERSION=5.5
+make install PHP_VERSION=5.5 DEPENDENCIES_LOWEST=1
+make audit
+make clean
+```
+
+Dependency resolution currently fails explicitly: the stock `composer:2`
+image lacks the required `ext-redis`, and Composer's advisory policy blocks
+the required CakePHP 2.x releases. A Redis-enabled Composer image can be
+selected with `COMPOSER_IMAGE`, but the security blocker needs a separate
+dependency modernization. This workflow does not ignore platform requirements
+or disable advisory blocking; dependency-install CI jobs remain blocked until
+these prerequisites are addressed.
+
+Each install resolves dependencies for `PHP_VERSION`, optionally preferring
+the lowest versions, then removes the temporary Composer platform configuration
+and lockfile even on failure. Existing non-platform Composer settings are
+preserved. Do not commit a lockfile or edit generated files under `vendor/`.
+Proxy variables (`HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY`) are forwarded.
+Set `CA_CERT_FILE` to a PEM file when an additional CA is required.
+Composer downloads are cached in `~/.cache/composer` (override with
+`COMPOSER_CACHE_DIR`). Syntax checks use the actual PHP Docker runtime.
+No test or static-analysis targets are supplied because no QA tools are declared.
+
 ### Further reading
 
 * About [CakePHP 2.x Caching](https://book.cakephp.org/2/en/core-libraries/caching.html)
